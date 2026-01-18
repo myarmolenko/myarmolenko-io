@@ -9,10 +9,23 @@
 
 <svelte:head>
 	<link rel="icon" href={favicon} />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta charset="UTF-8" />
+	<meta name="author" content="Maksym Yarmolenko" />
+	<meta property="og:type" content="website" />
+	<meta name="twitter:card" content="summary" />
 </svelte:head>
 
-<Navbar/>
+<Navbar />
 
-{@render children()}
+<main class="main-content">
+	{@render children()}
+</main>
 
-<Footer/>
+<Footer />
+
+<style>
+	.main-content {
+		flex: 1 0 auto;
+	}
+</style>
