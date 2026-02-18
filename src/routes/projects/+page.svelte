@@ -5,7 +5,7 @@
 
 <PageLayout>
 	<ProseContainer>
-		<h1>Contact</h1>
+		<h1>Projects</h1>
 		<p>Coming soon...</p>
 	</ProseContainer>
 </PageLayout>

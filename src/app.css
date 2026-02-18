@@ -21,15 +21,15 @@
         sans-serif;
     --font-mono: 'Fira Code', 'Consolas', 'Monaco', 'Courier New', monospace;
 
-    /* Fluid font sizes (clamp for mobile-to-desktop scaling) */
-    --font-size-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
-    --font-size-sm: clamp(0.875rem, 0.8rem + 0.375vw, 1rem);
-    --font-size-base: clamp(1rem, 0.9rem + 0.5vw, 1.125rem);
-    --font-size-lg: clamp(1.125rem, 1rem + 0.625vw, 1.25rem);
-    --font-size-xl: clamp(1.25rem, 1.1rem + 0.75vw, 1.5rem);
-    --font-size-2xl: clamp(1.5rem, 1.3rem + 1vw, 2rem);
-    --font-size-3xl: clamp(2rem, 1.6rem + 2vw, 3rem);
-    --font-size-4xl: clamp(2.5rem, 2rem + 2.5vw, 4rem);
+    /* Font sizes */
+    --font-size-xs:   0.75rem;    /*  12px */
+    --font-size-sm:   0.875rem;   /*  14px */
+    --font-size-base: 1rem;       /*  16px */
+    --font-size-lg:   1.125rem;   /*  18px */
+    --font-size-xl:   1.25rem;    /*  20px */
+    --font-size-2xl:  1.5rem;     /*  24px */
+    --font-size-3xl:  1.875rem;   /*  30px */
+    --font-size-4xl:  2.25rem;    /*  36px */
 
     /* Semantic font sizes */
     --font-size-h1: var(--font-size-4xl);
@@ -42,10 +42,14 @@
     --font-size-small: var(--font-size-sm);
 
     /* Line heights */
-    --line-height-tight: 1.25;
-    --line-height-normal: 1.5;
+    --line-height-tight: 1.15;
+    --line-height-normal: 1.58;
     --line-height-relaxed: 1.75;
     --line-height-loose: 2;
+
+    /* Letter spacing */
+    --letter-spacing-body: -0.003em;
+    --letter-spacing-heading: -0.022em;
 
     /* Font weights */
     --font-weight-normal: 400;
@@ -71,7 +75,7 @@
     --space-inline: var(--space-2);
 
     /* ===== Layout ===== */
-    --container-width-narrow: min(65vw, 900px);
+    --container-width-narrow: min(740px, calc(100vw - 48px));
     --container-width-normal: min(75vw, 1100px);
     --container-width-mobile: min(90vw, calc(100vw - 32px));
     --container-padding: 0 var(--space-2);
@@ -120,6 +124,7 @@ body {
 	);
 	background-size: var(--grid-spacing) var(--grid-spacing);
 	color: var(--text-color);
+	letter-spacing: var(--letter-spacing-body);
 }
 
 .desktop { display: none; }
@@ -135,6 +140,7 @@ body {
 h1, h2, h3, h4, h5, h6 {
     font-weight: var(--font-weight-semibold);
     line-height: var(--line-height-tight);
+    letter-spacing: var(--letter-spacing-heading);
     margin: 0;
 }
 
@@ -297,7 +303,7 @@ img {
 }
 
 .prose p {
-    margin-bottom: var(--space-3);
+    margin-bottom: 2em;
 }
 
 .prose ul,

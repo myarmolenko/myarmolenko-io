@@ -7,7 +7,7 @@ export type NavigationLink = Readonly<{
 
 export const defaultNavigationLinks: readonly NavigationLink[] = [
 	{ name: 'Home', href: '/' },
-	{ name: 'About', href: '/about' },
 	{ name: 'Blog', href: '/blog' },
-	{ name: 'Contact', href: '/contact' }
+	{ name: 'Projects', href: '/projects' },
+	{ name: 'About', href: '/about' }
 ];

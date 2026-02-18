@@ -12,11 +12,10 @@ export interface PostMetadata {
 }
 
 /**
- * Full blog post with content
+ * Full blog post - for server-side use only (without content component)
+ * Content component should be loaded client-side to avoid serialization issues
  */
-export interface Post extends PostMetadata {
-	content: any;
-}
+export type Post = PostMetadata;
 
 /**
  * Module type for markdown imports
@@ -53,7 +52,7 @@ export async function getAllPosts(): Promise<PostMetadata[]> {
 /**
  * Load a single blog post by slug
  * @param slug - URL slug of the post (filename without extension)
- * @returns Post with content, or null if not found
+ * @returns Post metadata, or null if not found
  */
 export async function getPostBySlug(slug: string): Promise<Post | null> {
 	try {
@@ -65,8 +64,7 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
 
 		return {
 			...module.metadata,
-			slug,
-			content: module.default
+			slug
 		};
 	} catch (error) {
 		console.error(`Failed to load post: ${slug}`, error);

@@ -11,5 +11,5 @@
 </svelte:head>
 
 <BlogPostLayout post={data.post}>
-	<svelte:component this={data.post.content} />
+	<svelte:component this={data.content} />
 </BlogPostLayout>
