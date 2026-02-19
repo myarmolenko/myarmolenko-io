@@ -8,7 +8,7 @@
 </script>
 
 <footer class={`footer ${$$props.class ?? ''}`} aria-label="Footer">
-	<div class="footer__inner container-wide">
+	<div class="footer__inner container">
 		<!-- First line: Social icons + middle slot -->
 		<div class="footer__top">
 			<div class="footer__socials" aria-label="Social links">

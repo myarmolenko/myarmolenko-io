@@ -32,7 +32,7 @@
 <svelte:window on:keydown={onKeydown} />
 
 <nav class={`nav ${$$props.class ?? ''}`} aria-label="Primary navigation" use:clickOutside>
-	<div class="nav__bar container-wide">
+	<div class="nav__bar container">
 		<button
 			type="button"
 			class="nav__burger"
@@ -50,7 +50,7 @@
 	</div>
 
 	<div id={menuId} class="nav__dropdown" data-open={open}>
-		<ul class="nav__list container-wide" role="list">
+		<ul class="nav__list container" role="list">
 			{#each navigationLinks as link (link.href)}
 				<li>
 					<a

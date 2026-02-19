@@ -6,7 +6,7 @@
 </script>
 
 <nav class="nav {$$props.class}" aria-label="Primary navigation">
-	<div class="nav__container container-wide">
+	<div class="nav__container container">
 		<ul class="nav__list">
 			{#each navigationLinks as link (link.href)}
 				<li>

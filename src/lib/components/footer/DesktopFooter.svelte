@@ -8,7 +8,7 @@
 </script>
 
 <footer class={`footer ${$$props.class ?? ''}`} aria-label="Footer">
-	<div class="footer__inner container-wide">
+	<div class="footer__inner container">
 		<!-- Left: Copyright -->
 		<div class="footer__left">© {year} {owner}</div>
 
