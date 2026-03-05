@@ -14,8 +14,8 @@
 
 <style>
 	.page-content {
-		padding-top: var(--space-6);
-		padding-bottom: var(--space-10);
+		padding-top: var(--space-4);
+		padding-bottom: var(--space-4);
 	}
 
 	@media (max-width: 767px) {

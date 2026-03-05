@@ -30,12 +30,12 @@ interface MarkdownModule {
  * @returns Array of post metadata
  */
 export async function getAllPosts(): Promise<PostMetadata[]> {
-	const modules = import.meta.glob<MarkdownModule>('./posts/*.md', { eager: true });
+	const modules = import.meta.glob<MarkdownModule>('../../content/posts/*.md', { eager: true });
 	const posts: PostMetadata[] = [];
 
 	for (const path in modules) {
 		const module = modules[path];
-		const slug = path.match(/\.\/posts\/(.+)\.md$/)?.[1];
+		const slug = path.match(/\.\.\/\.\.\/content\/posts\/(.+)\.md$/)?.[1];
 
 		if (module.metadata && module.metadata.published && slug) {
 			posts.push({
@@ -56,7 +56,7 @@ export async function getAllPosts(): Promise<PostMetadata[]> {
  */
 export async function getPostBySlug(slug: string): Promise<Post | null> {
 	try {
-		const module = await import(`./posts/${slug}.md`);
+		const module = await import(`../../content/posts/${slug}.md`);
 
 		if (!module.metadata || !module.metadata.published) {
 			return null;

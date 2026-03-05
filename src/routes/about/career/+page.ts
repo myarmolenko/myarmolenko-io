@@ -2,11 +2,9 @@ import type { PageLoad } from './$types';
 import type { ComponentType } from 'svelte';
 
 export const load: PageLoad = async ({ data }) => {
-	// Dynamically import the markdown component
-	const module = await import(`../../../content/posts/${data.post.slug}.md`);
-
+	const module = await import('../../../content/career/career.md');
 	return {
-		post: data.post,
+		hasCv: data.hasCv,
 		content: module.default as ComponentType
 	};
 };

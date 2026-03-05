@@ -1,71 +1,48 @@
 <script lang="ts">
+	import { page } from '$app/state';
 	import type { NavigationLink } from './types';
 	import { defaultNavigationLinks } from './types';
 
 	export let navigationLinks: readonly NavigationLink[] = defaultNavigationLinks;
 
-	let open = false;
-	const menuId = 'mobile-nav-menu';
-
-	const toggle = () => (open = !open);
-	const close = () => (open = false);
-
-	function onKeydown(e: KeyboardEvent) {
-		if (e.key === 'Escape') close();
-	}
-
-	function clickOutside(node: HTMLElement) {
-		function onPointerDown(e: PointerEvent) {
-			if (!open) return;
-			if (!node.contains(e.target as Node)) close();
-		}
-
-		document.addEventListener('pointerdown', onPointerDown);
-		return {
-			destroy() {
-				document.removeEventListener('pointerdown', onPointerDown);
-			}
-		};
+	function isActive(href: string, pathname: string): boolean {
+		if (href === '/') return pathname === '/';
+		return pathname.startsWith(href);
 	}
 </script>
 
-<svelte:window on:keydown={onKeydown} />
-
-<nav class={`nav ${$$props.class ?? ''}`} aria-label="Primary navigation" use:clickOutside>
-	<div class="nav__bar container">
-		<button
-			type="button"
-			class="nav__burger"
-			aria-label={open ? 'Close menu' : 'Open menu'}
-			aria-expanded={open}
-			aria-controls={menuId}
-			on:click|stopPropagation={toggle}
-		>
-			<span class="nav__burgerIcon" aria-hidden="true">
-				<span class="nav__burgerLine"></span>
-				<span class="nav__burgerLine"></span>
-				<span class="nav__burgerLine"></span>
-			</span>
-		</button>
-	</div>
-
-	<div id={menuId} class="nav__dropdown" data-open={open}>
-		<ul class="nav__list container" role="list">
-			{#each navigationLinks as link (link.href)}
-				<li>
-					<a
-						class="nav__link"
-						href={link.href}
-						target={link.target}
-						rel={link.target === '_blank' ? link.rel ?? 'noopener noreferrer' : link.rel}
-						on:click={close}
+<nav class={`nav ${$$props.class ?? ''}`} aria-label="Primary navigation">
+	<ul class="nav__list" role="list">
+		{#each navigationLinks as link (link.href)}
+			{@const active = isActive(link.href, page.url.pathname)}
+			<li>
+				<a
+					class="nav__link"
+					class:nav__link--active={active}
+					href={link.href}
+					target={link.target}
+					rel={link.target === '_blank' ? link.rel ?? 'noopener noreferrer' : link.rel}
+					aria-current={active ? 'page' : undefined}
+				>
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="1.5"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						aria-hidden="true"
 					>
-						{link.name}
-					</a>
-				</li>
-			{/each}
-		</ul>
-	</div>
+						<path d={link.icon} />
+					</svg>
+					{#if active}
+						<span class="nav__label">{link.name}</span>
+					{/if}
+				</a>
+			</li>
+		{/each}
+	</ul>
 </nav>
 
 <style>
@@ -74,85 +51,37 @@
 		background: transparent;
 	}
 
-	.nav__bar {
-		display: flex;
-		justify-content: flex-end;
-		align-items: center;
-	}
-
-	.nav__burger {
-		border: 0;
-		background: transparent;
-		padding: 10px;
-		border-radius: 10px;
-		cursor: pointer;
-	}
-
-	.nav__burger:focus-visible {
-		outline: 2px solid currentColor;
-		outline-offset: 4px;
-	}
-
-	.nav__burgerIcon {
-		display: inline-flex;
-		flex-direction: column;
-		gap: 6px;
-	}
-
-	.nav__burgerLine {
-		width: 22px;
-		height: 2px;
-		background: currentColor;
-		border-radius: 999px;
-	}
-
-	.nav__dropdown {
-		width: 100%;
-		max-height: 0;
-		overflow: hidden;
-		opacity: 0;
-		pointer-events: none;
-		transform: translateY(-12px);
-		transition:
-			transform 160ms ease,
-			opacity 160ms ease,
-			max-height 200ms ease;
-	}
-
-	.nav__dropdown[data-open='true'] {
-		max-height: 70vh;
-		opacity: 1;
-		pointer-events: auto;
-		transform: translateY(0);
-	}
-
 	.nav__list {
-		margin-top: 12px;
-		padding: 14px;
-		list-style: none;
 		display: flex;
-		flex-direction: column;
-		gap: 14px;
+		justify-content: center;
 		align-items: center;
-		text-align: center;
-		backdrop-filter: blur(10px);
-		background: rgba(0, 0, 0, 0.06);
-		border-radius: 14px;
+		gap: 8px;
+		padding: 0;
+		margin: 0;
+		list-style: none;
 	}
 
 	.nav__link {
-		display: inline-block;
-		padding: 10px 14px;
-		border-radius: 10px;
+		display: flex;
+		align-items: center;
+		gap: 6px;
+		padding: 6px 8px;
+		border-radius: 999px;
 		text-decoration: none;
 		color: inherit;
 		font-weight: 500;
 		letter-spacing: 0.2px;
 	}
 
-	.nav__link:hover,
-	.nav__link:focus-visible {
-		background: rgba(0, 0, 0, 0.06);
-		outline: none;
+	.nav__link--active {
+		text-decoration: underline;
+		text-underline-offset: 6px;
+		text-decoration-thickness: 2px;
+	}
+
+	svg {
+		width: 20px;
+		height: 20px;
+		flex-shrink: 0;
 	}
 </style>

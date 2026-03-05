@@ -3,6 +3,7 @@
 	import '../app.css';
 	import Navbar from '$lib/components/navbar/Navbar.svelte'
     import Footer from '$lib/components/footer/Footer.svelte';
+	import BackToTop from '$lib/components/BackToTop.svelte';
 
 	let { children } = $props();
 </script>
@@ -23,6 +24,7 @@
 </main>
 
 <Footer />
+<BackToTop />
 
 <style>
 	.main-content {

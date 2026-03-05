@@ -7,8 +7,6 @@ tags: ["meta", "introduction"]
 published: true
 ---
 
-# Welcome to My Blog
-
 Hello and welcome! This is the first post on my technical blog, built with SvelteKit and designed for sharing knowledge about software engineering, web development, and technology.
 
 ## What to Expect

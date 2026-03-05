@@ -3,7 +3,7 @@
 :root {
     /* ===== Colors ===== */
     --bg-color: #ebe2d0e5;
-    --text-color: #333333;
+    --text-color: hsl(0, 0%, 20%);
     --text-color-secondary: #666666;
     --text-color-muted: #999999;
     --link-color: var(--text-color);
