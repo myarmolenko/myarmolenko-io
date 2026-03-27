@@ -21,6 +21,7 @@ build/
 # =========================
 # Logs
 # =========================
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
@@ -31,6 +32,10 @@ pnpm-debug.log*
 # =========================
 .DS_Store
 Thumbs.db
+
+# Vim
+*.swp
+*.swo
 
 # VS Code
 .vscode/
@@ -46,6 +51,8 @@ Thumbs.db
 .prettier-cache
 .turbo/
 .cache/
+tmp/
+temp/
 
 # =========================
 # Playwright / Vitest (if added later)
@@ -58,4 +65,4 @@ coverage/
 # Optional
 # =========================
 *.local
-.claude
+.claude/

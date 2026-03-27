@@ -13,7 +13,7 @@
 
 <PageLayout>
 	<ProseContainer>
-		<svelte:component this={data.content} />
+		<data.content />
 	</ProseContainer>
 
 	{#if data.hasCv}

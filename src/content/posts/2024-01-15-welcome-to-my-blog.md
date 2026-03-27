@@ -1,4 +1,5 @@
 ---
+type: note
 title: "Welcome to My Blog"
 description: "An introduction to this technical blog and what you can expect to find here"
 date: "2024-01-15"

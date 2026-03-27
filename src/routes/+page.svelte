@@ -1,9 +1,58 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import PageLayout from '$lib/components/layouts/PageLayout.svelte';
 	import { formatDate } from '$lib/utils/date';
+	import { tagFilterIndex } from '$lib/utils/filters';
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
+
+	const STORAGE_KEY = 'myarmolenko-io-favorites';
+
+	function getStarPoints(slug: string): string {
+		let seed = 0;
+		for (const char of slug) seed = (seed * 31 + char.charCodeAt(0)) | 0;
+
+		let s = seed;
+		const rand = () => { s = (s * 1664525 + 1013904223) & 0xffffffff; return (s >>> 0) / 0xffffffff; };
+
+		const cx = 12, cy = 12;
+		const pts: string[] = [];
+		for (let i = 0; i < 5; i++) {
+			const outerR = 9 + rand() * 2.5;
+			const outerAngle = (Math.PI * 2 * i / 5) - Math.PI / 2 + (rand() - 0.5) * 0.25;
+			const innerR = 3.5 + rand() * 1.5;
+			const innerAngle = outerAngle + Math.PI / 5 + (rand() - 0.5) * 0.2;
+			pts.push(
+				`${(cx + outerR * Math.cos(outerAngle)).toFixed(2)},${(cy + outerR * Math.sin(outerAngle)).toFixed(2)}`,
+				`${(cx + innerR * Math.cos(innerAngle)).toFixed(2)},${(cy + innerR * Math.sin(innerAngle)).toFixed(2)}`
+			);
+		}
+		return pts.join(' ');
+	}
+
+	let favorites = $state<Set<string>>(new Set());
+
+	onMount(() => {
+		try {
+			const stored = localStorage.getItem(STORAGE_KEY);
+			if (stored) favorites = new Set(JSON.parse(stored));
+		} catch {
+			// ignore parse errors
+		}
+	});
+
+	function toggleFavorite(slug: string) {
+		const next = new Set(favorites);
+		if (next.has(slug)) next.delete(slug);
+		else next.add(slug);
+		favorites = next;
+		try {
+			localStorage.setItem(STORAGE_KEY, JSON.stringify([...favorites]));
+		} catch {
+			// ignore storage errors (private browsing, quota, etc.)
+		}
+	}
 </script>
 
 <svelte:head>
@@ -13,7 +62,7 @@
 
 <PageLayout>
 	<header class="blog-header">
-		<h1>Hi there! I’m Maks. 👋</h1>
+		<h1>Hi there! I'm Maks. 👋</h1>
 		<p class="blog-description">
 			And this is my tech blog dump
 		</p>
@@ -21,9 +70,14 @@
 
 	<div class="posts">
 		{#each data.posts as post (post.slug)}
-			<article class="post-card">
+			<article class="post-card" class:favorited={favorites.has(post.slug)}>
 				<a href="/blog/{post.slug}" class="post-link">
-					<h2 class="post-title">{post.title}</h2>
+					<div class="post-title-row">
+						<h2 class="post-title">{post.title}</h2>
+						{#if post.type}
+							<span class="post-type" style="--tag-filter: url(#sketchy-tag-{tagFilterIndex(post.slug)})">{post.type}</span>
+						{/if}
+					</div>
 					<p class="post-description">{post.description}</p>
 					<div class="post-meta">
 						<time datetime={post.date} class="post-date">
@@ -39,6 +93,15 @@
 						{/if}
 					</div>
 				</a>
+				<button
+					class="star-btn"
+					aria-label={favorites.has(post.slug) ? 'Remove from favorites' : 'Add to favorites'}
+					onclick={(e) => { e.preventDefault(); toggleFavorite(post.slug); }}
+				>
+					<svg class="star-icon" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
+						<polygon points={getStarPoints(post.slug)} />
+					</svg>
+				</button>
 			</article>
 		{/each}
 	</div>
@@ -66,6 +129,7 @@
 	}
 
 	.post-card {
+		position: relative;
 		padding: var(--space-4);
 		background: rgba(255, 255, 255, 0.4);
 		border-radius: var(--border-radius-md);
@@ -83,8 +147,15 @@
 		color: inherit;
 	}
 
-	.post-title {
+	.post-title-row {
+		display: flex;
+		align-items: center;
+		gap: 0;
+		flex-wrap: wrap;
 		margin-bottom: var(--space-2);
+	}
+
+	.post-title {
 		font-size: var(--font-size-2xl);
 		transition: color var(--transition-fast);
 	}
@@ -128,6 +199,65 @@
 		border-radius: var(--border-radius-sm);
 		font-size: var(--font-size-xs);
 		font-weight: var(--font-weight-medium);
+	}
+
+	.post-type {
+		position: relative;
+		display: inline-block;
+		margin-left: 10px;
+		padding: 2px 8px;
+		background: rgba(180, 155, 120, 0.15);
+		border-radius: 4px;
+		color: #8b7355;
+		font-size: 0.65rem;
+		font-weight: 600;
+		letter-spacing: 0.05em;
+		text-transform: uppercase;
+		line-height: 1;
+	}
+
+	.post-type::before {
+		content: '';
+		position: absolute;
+		inset: 0;
+		border: 1px solid rgba(139, 115, 85, 0.5);
+		border-radius: 4px;
+		filter: var(--tag-filter, url(#sketchy-tag-0));
+		pointer-events: none;
+	}
+
+	.star-btn {
+		position: absolute;
+		top: var(--space-2);
+		right: var(--space-2);
+		background: none;
+		border: none;
+		cursor: pointer;
+		padding: 4px;
+		color: #c8a020;
+		opacity: 0;
+		transition: opacity var(--transition-base);
+		filter: url(#sketchy-border);
+		line-height: 0;
+	}
+
+	.post-card:hover .star-btn {
+		opacity: 1;
+	}
+
+	.post-card.favorited .star-btn {
+		opacity: 1;
+	}
+
+	.star-icon {
+		fill: none;
+		stroke: currentColor;
+		stroke-width: 1.5;
+		stroke-linejoin: round;
+	}
+
+	.post-card.favorited .star-icon {
+		fill: currentColor;
 	}
 
 	@media (max-width: 767px) {

@@ -1,3 +1,13 @@
+import type { Component } from 'svelte';
+
+export const POST_TYPES = {
+	Note: 'note',
+	Essay: 'essay',
+	Guide: 'guide'
+} as const;
+
+export type PostType = (typeof POST_TYPES)[keyof typeof POST_TYPES];
+
 /**
  * Blog post metadata structure from frontmatter
  */
@@ -9,6 +19,7 @@ export interface PostMetadata {
 	tags: string[];
 	published: boolean;
 	slug: string;
+	type?: PostType;
 }
 
 /**
@@ -21,7 +32,7 @@ export type Post = PostMetadata;
  * Module type for markdown imports
  */
 interface MarkdownModule {
-	default: any;
+	default: Component;
 	metadata: Omit<PostMetadata, 'slug'>;
 }
 
