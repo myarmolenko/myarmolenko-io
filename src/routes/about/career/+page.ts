@@ -1,10 +1,11 @@
 import type { PageLoad } from './$types';
-import type { ComponentType } from 'svelte';
+import type { Component } from 'svelte';
 
-export const load: PageLoad = async ({ data }) => {
+export const prerender = true;
+
+export const load: PageLoad = async () => {
 	const module = await import('../../../content/career/career.md');
 	return {
-		hasCv: data.hasCv,
-		content: module.default as ComponentType
+		content: module.default as Component
 	};
 };
