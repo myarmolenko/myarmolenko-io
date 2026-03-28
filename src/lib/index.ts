@@ -1,6 +1,6 @@
 export type { PostMetadata, Post, PostType } from './content/loader';
 export { POST_TYPES, getAllPosts, getPostBySlug, getPostsByTag, getAllTags } from './content/loader';
-export { formatDate, formatDateShort, formatDateNumeric, formatDateDisplay, getRelativeTime } from './utils/date';
+export { formatDate, formatDateDisplay } from './utils/date';
 export { tagFilterIndex } from './utils/filters';
 
 export { default as TagBadge } from './components/posts/TagBadge.svelte';
