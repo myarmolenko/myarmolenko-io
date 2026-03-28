@@ -1,5 +1,5 @@
 <script lang="ts">
-	let { title, subtitle, paddingTop = 'var(--space-2)', marginBottom = 'var(--space-4)' }: {
+	let { title, subtitle, paddingTop = 'var(--space-1)', marginBottom = 'var(--space-4)' }: {
 		title: string;
 		subtitle?: string;
 		paddingTop?: string;

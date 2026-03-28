@@ -23,8 +23,10 @@
 		{#if post.description}<p class="post-description">{post.description}</p>{/if}
 		<div class="post-meta">
 			{#if post.date}<time datetime={post.date} class="post-date">{formatDate(post.date)}</time>{/if}
+			<span class="separator">•</span>
+			<span>{post.readingTime} min read</span>
 			{#if post.tags.length > 0}
-				{#if post.date}<span class="separator">•</span>{/if}
+				<span class="separator">•</span>
 				<div class="post-tags">
 					{#each post.tags as tag}
 						<TagBadge {tag} />

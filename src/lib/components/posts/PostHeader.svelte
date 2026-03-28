@@ -19,8 +19,12 @@
 <style>
 	.post-header {
 		text-align: center;
-		padding-top: var(--space-2);
+		padding-top: var(--space-1);
 		margin-bottom: var(--space-6);
+	}
+
+	h1 {
+		margin-bottom: var(--space-2);
 	}
 
 	.post-meta {

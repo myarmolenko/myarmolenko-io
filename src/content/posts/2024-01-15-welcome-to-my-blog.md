@@ -1,10 +1,9 @@
 ---
-type: note
+type: post
 title: "Welcome to My Blog"
-description: "An introduction to this technical blog and what you can expect to find here"
 date: "2024-01-15"
+description: "An introduction to this technical blog and what you can expect to find here"
 author: "Maksym Yarmolenko"
-tags: ["meta", "introduction"]
 published: true
 ---
 

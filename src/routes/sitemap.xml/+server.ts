@@ -3,7 +3,7 @@ import type { RequestHandler } from './$types';
 
 export const prerender = true;
 
-const staticPages = ['/', '/about', '/about/career', '/projects'];
+const staticPages = ['/', '/about', '/projects'];
 
 export const GET: RequestHandler = async ({ url }) => {
 	const posts = await getAllPosts();

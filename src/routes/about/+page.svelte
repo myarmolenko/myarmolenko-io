@@ -19,7 +19,5 @@
 		<p>I'm a software engineer, mostly focused on backend solutions.</p>
 		<p>This site is my digital garden for learning and tinkering — a place to collect notes, ideas, and everything that keeps my mind busy in the technical world.</p>
 
-		<h2>About Me</h2>
-		<p><a href="/about/career">/career</a> - brief overview of my journey as a software engineer</p>
-	</ProseContainer>
+</ProseContainer>
 </PageLayout>
