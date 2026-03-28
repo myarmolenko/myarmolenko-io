@@ -1,14 +1,9 @@
 <script lang="ts">
 	import { page } from '$app/state';
 	import type { NavigationLink } from './types';
-	import { defaultNavigationLinks } from './types';
+	import { defaultNavigationLinks, isActive } from './types';
 
 	export let navigationLinks: readonly NavigationLink[] = defaultNavigationLinks;
-
-	function isActive(href: string, pathname: string): boolean {
-		if (href === '/') return pathname === '/';
-		return pathname.startsWith(href);
-	}
 </script>
 
 <nav class={`nav ${$$props.class ?? ''}`} aria-label="Primary navigation">

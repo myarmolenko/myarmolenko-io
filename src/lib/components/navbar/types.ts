@@ -6,6 +6,11 @@ export type NavigationLink = Readonly<{
 	target?: '_self' | '_blank';
 }>;
 
+export function isActive(href: string, pathname: string): boolean {
+	if (href === '/') return pathname === '/';
+	return pathname.startsWith(href);
+}
+
 export const defaultNavigationLinks: readonly NavigationLink[] = [
 	{
 		name: 'Home',
