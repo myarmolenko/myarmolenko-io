@@ -36,6 +36,8 @@
 <svelte:head>
 	<title>Maksym Yarmolenko - Software Engineer</title>
 	<meta name="description" content="Personal blog and portfolio of Maksym Yarmolenko, covering software engineering, web development, and technology" />
+	<meta property="og:title" content="Maksym Yarmolenko - Software Engineer" />
+	<meta property="og:description" content="Personal blog and portfolio of Maksym Yarmolenko, covering software engineering, web development, and technology" />
 </svelte:head>
 
 <PageLayout>

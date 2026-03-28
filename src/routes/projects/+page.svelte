@@ -3,6 +3,13 @@
 	import PageHeader from '$lib/components/layouts/PageHeader.svelte';
 </script>
 
+<svelte:head>
+	<title>Projects - Maksym Yarmolenko</title>
+	<meta name="description" content="Projects by Maksym Yarmolenko." />
+	<meta property="og:title" content="Projects - Maksym Yarmolenko" />
+	<meta property="og:description" content="Projects by Maksym Yarmolenko." />
+</svelte:head>
+
 <PageLayout>
 	<PageHeader title="Projects" />
 	<div class="empty-state">

@@ -5,8 +5,10 @@
 </script>
 
 <svelte:head>
-	<title>About Blog</title>
-	<meta name="description" content="Learn more about this blog" />
+	<title>About - Maksym Yarmolenko</title>
+	<meta name="description" content="Learn more about this blog and its author, Maksym Yarmolenko." />
+	<meta property="og:title" content="About - Maksym Yarmolenko" />
+	<meta property="og:description" content="Learn more about this blog and its author, Maksym Yarmolenko." />
 </svelte:head>
 
 <PageLayout>
