@@ -20,13 +20,11 @@
 				<PostTypeBadge type={post.type} slug={post.slug} />
 			{/if}
 		</div>
-		<p class="post-description">{post.description}</p>
+		{#if post.description}<p class="post-description">{post.description}</p>{/if}
 		<div class="post-meta">
-			<time datetime={post.date} class="post-date">
-				{formatDate(post.date)}
-			</time>
+			{#if post.date}<time datetime={post.date} class="post-date">{formatDate(post.date)}</time>{/if}
 			{#if post.tags.length > 0}
-				<span class="separator">•</span>
+				{#if post.date}<span class="separator">•</span>{/if}
 				<div class="post-tags">
 					{#each post.tags as tag}
 						<TagBadge {tag} />
@@ -68,6 +66,7 @@
 
 	.post-title {
 		font-size: var(--font-size-2xl);
+		line-height: 1;
 		transition: color var(--transition-fast);
 	}
 

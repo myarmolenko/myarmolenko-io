@@ -13,6 +13,20 @@ export function formatDate(dateString: string): string {
 }
 
 /**
+ * Formats an ISO date string into a numeric format
+ * @param dateString - ISO date string (e.g., "2024-01-15")
+ * @returns Numeric date string (e.g., "01/15/2024")
+ */
+export function formatDateNumeric(dateString: string): string {
+	const date = new Date(dateString);
+	return date.toLocaleDateString('en-US', {
+		year: 'numeric',
+		month: '2-digit',
+		day: '2-digit'
+	});
+}
+
+/**
  * Formats an ISO date string into a short format
  * @param dateString - ISO date string (e.g., "2024-01-15")
  * @returns Short formatted date string (e.g., "Jan 15, 2024")
@@ -20,6 +34,20 @@ export function formatDate(dateString: string): string {
 export function formatDateShort(dateString: string): string {
 	const date = new Date(dateString);
 	return date.toLocaleDateString('en-US', {
+		year: 'numeric',
+		month: 'short',
+		day: 'numeric'
+	});
+}
+
+/**
+ * Formats an ISO date string into a display format
+ * @param dateString - ISO date string (e.g., "2024-01-15")
+ * @returns Display date string (e.g., "15 Jan 2024")
+ */
+export function formatDateDisplay(dateString: string): string {
+	const date = new Date(dateString);
+	return date.toLocaleDateString('en-GB', {
 		year: 'numeric',
 		month: 'short',
 		day: 'numeric'

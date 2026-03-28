@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import PageLayout from '$lib/components/layouts/PageLayout.svelte';
+	import PageHeader from '$lib/components/layouts/PageHeader.svelte';
 	import PostCard from '$lib/components/posts/PostCard.svelte';
 	import type { PageData } from './$types';
 
@@ -38,44 +39,41 @@
 </svelte:head>
 
 <PageLayout>
-	<header class="blog-header">
-		<h1>Hi there! I'm Maks. 👋</h1>
-		<p class="blog-description">
-			And this is my tech blog dump
-		</p>
-	</header>
+	<PageHeader
+		title="Hi there! I'm Maks. 👋"
+		subtitle="And this is my tech blog dump"
+		marginBottom="var(--space-5)"
+	/>
 
-	<div class="posts">
-		{#each data.posts as post (post.slug)}
-			<PostCard {post} favorited={favorites.has(post.slug)} ontoggle={toggleFavorite} />
-		{/each}
-	</div>
+	{#if data.posts.length > 0}
+		<div class="posts">
+			{#each data.posts as post (post.slug)}
+				<PostCard {post} favorited={favorites.has(post.slug)} ontoggle={toggleFavorite} />
+			{/each}
+		</div>
+	{:else}
+		<div class="empty-state">
+			<p>Nothing here yet.<br />Writing takes time.</p>
+		</div>
+	{/if}
 </PageLayout>
 
 <style>
-	.blog-header {
-		margin-bottom: var(--space-5);
-		text-align: center;
-	}
-
-	.blog-header h1 {
-		margin-bottom: var(--space-1);
-	}
-
-	.blog-description {
-		color: var(--text-color-secondary);
-		font-size: var(--font-size-lg);
-	}
-
 	.posts {
 		display: flex;
 		flex-direction: column;
 		gap: var(--space-4);
 	}
 
-	@media (max-width: 767px) {
-		.blog-header {
-			margin-bottom: var(--space-6);
-		}
+	.empty-state {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		min-height: 50vh;
+		text-align: center;
+		color: var(--text-color-secondary);
+		font-size: var(--font-size-lg);
+		line-height: var(--line-height-relaxed);
 	}
+
 </style>

@@ -2,108 +2,99 @@ import type { Component } from 'svelte';
 
 export const POST_TYPES = {
 	Note: 'note',
-	Essay: 'essay',
-	Guide: 'guide'
+	Post: 'post'
 } as const;
+
+const SLUG_PATTERN = /\.\.\/\.\.\/content\/posts\/(.+)\.md$/;
+const VALID_POST_TYPES = new Set<string>(Object.values(POST_TYPES));
 
 export type PostType = (typeof POST_TYPES)[keyof typeof POST_TYPES];
 
-/**
- * Blog post metadata structure from frontmatter
- */
 export interface PostMetadata {
 	title: string;
-	description: string;
-	date: string;
-	author: string;
+	slug: string;
 	tags: string[];
 	published: boolean;
-	slug: string;
+	date: string;
+	description?: string;
+	author?: string;
 	type?: PostType;
 }
 
-/**
- * Full blog post - for server-side use only (without content component)
- * Content component should be loaded client-side to avoid serialization issues
- */
 export type Post = PostMetadata;
 
-/**
- * Module type for markdown imports
- */
-interface MarkdownModule {
-	default: Component;
-	metadata: Omit<PostMetadata, 'slug'>;
+
+interface RawFrontmatter {
+	title: string;
+	description?: string;
+	date?: string;
+	author?: string;
+	tags?: string[];
+	published?: boolean;
+	type?: unknown;
 }
 
-/**
- * Load all published blog posts, sorted by date (newest first)
- * @returns Array of post metadata
- */
+interface MarkdownModule {
+	default: Component;
+	metadata: RawFrontmatter;
+}
+
+function parsePostType(value: unknown): PostType | undefined {
+	if (typeof value === 'string' && VALID_POST_TYPES.has(value)) {
+		return value as PostType;
+	}
+	return undefined;
+}
+
+function toPostMetadata(metadata: RawFrontmatter & { date: string }, slug: string): PostMetadata {
+	return {
+		...metadata,
+		slug,
+		tags: metadata.tags ?? [],
+		published: metadata.published ?? false,
+		type: parsePostType(metadata.type)
+	};
+}
+
+
 export async function getAllPosts(): Promise<PostMetadata[]> {
 	const modules = import.meta.glob<MarkdownModule>('../../content/posts/*.md', { eager: true });
 	const posts: PostMetadata[] = [];
 
 	for (const path in modules) {
-		const module = modules[path];
-		const slug = path.match(/\.\.\/\.\.\/content\/posts\/(.+)\.md$/)?.[1];
+		const { metadata } = modules[path];
+		const slug = path.match(SLUG_PATTERN)?.[1];
 
-		if (module.metadata && module.metadata.published && slug) {
-			posts.push({
-				...module.metadata,
-				slug
-			});
+		if (metadata.published && metadata.date && slug) {
+			posts.push(toPostMetadata(metadata, slug));
 		}
 	}
 
-	// Sort by date descending (newest first)
 	return posts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 }
 
-/**
- * Load a single blog post by slug
- * @param slug - URL slug of the post (filename without extension)
- * @returns Post metadata, or null if not found
- */
 export async function getPostBySlug(slug: string): Promise<Post | null> {
 	try {
-		const module = await import(`../../content/posts/${slug}.md`);
+		const { metadata } = await import(`../../content/posts/${slug}.md`);
 
-		if (!module.metadata || !module.metadata.published) {
+		if (!metadata?.published || !metadata.date) {
 			return null;
 		}
 
-		return {
-			...module.metadata,
-			slug
-		};
+		return toPostMetadata(metadata, slug);
 	} catch (error) {
 		console.error(`Failed to load post: ${slug}`, error);
 		return null;
 	}
 }
 
-/**
- * Get posts by tag
- * @param tag - Tag to filter by
- * @returns Array of post metadata matching the tag
- */
 export async function getPostsByTag(tag: string): Promise<PostMetadata[]> {
-	const allPosts = await getAllPosts();
-	return allPosts.filter((post) => post.tags.includes(tag));
+	const posts = await getAllPosts();
+	return posts.filter((post) => post.tags.includes(tag));
 }
 
-/**
- * Get all unique tags from all posts
- * @returns Array of unique tags
- */
 export async function getAllTags(): Promise<string[]> {
-	const allPosts = await getAllPosts();
-	const tagsSet = new Set<string>();
-
-	allPosts.forEach((post) => {
-		post.tags.forEach((tag) => tagsSet.add(tag));
-	});
-
-	return Array.from(tagsSet).sort();
+	const posts = await getAllPosts();
+	const tags = new Set(posts.flatMap((post) => post.tags));
+	return Array.from(tags).sort();
 }
