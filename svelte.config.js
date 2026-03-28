@@ -14,7 +14,10 @@ const config = {
 			fallback: undefined,
 			precompress: false,
 			strict: true
-		})
+		}),
+		prerender: {
+			handleUnseenRoutes: () => {}
+		}
 	},
 
 	extensions: ['.svelte', '.md', '.svx']

@@ -4,7 +4,7 @@ title: "Welcome to My Blog"
 date: "2024-01-15"
 description: "An introduction to this technical blog and what you can expect to find here"
 author: "Maksym Yarmolenko"
-published: true
+published: false
 ---
 
 Hello and welcome! This is the first post on my technical blog, built with SvelteKit and designed for sharing knowledge about software engineering, web development, and technology.

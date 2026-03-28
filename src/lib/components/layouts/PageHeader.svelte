@@ -9,8 +9,8 @@
 
 <header
 	class="page-header"
-	style:--padding-top={paddingTop}
-	style:--margin-bottom={marginBottom}
+	style:padding-top={paddingTop}
+	style:margin-bottom={marginBottom}
 >
 	<h1 class:has-subtitle={subtitle}>{title}</h1>
 	{#if subtitle}
@@ -21,8 +21,6 @@
 <style>
 	.page-header {
 		text-align: center;
-		padding-top: var(--padding-top);
-		margin-bottom: var(--margin-bottom);
 	}
 
 	h1.has-subtitle {
@@ -32,5 +30,15 @@
 	.subtitle {
 		color: var(--text-color-secondary);
 		font-size: var(--font-size-lg);
+	}
+
+	@media (max-width: 640px) {
+		h1 {
+			font-size: var(--font-size-3xl);
+		}
+
+		.subtitle {
+			font-size: var(--font-size-base);
+		}
 	}
 </style>
