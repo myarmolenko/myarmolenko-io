@@ -1,18 +1,18 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import PageLayout from '$lib/components/layouts/PageLayout.svelte';
 	import ProseContainer from '$lib/components/layouts/ProseContainer.svelte';
 </script>
 
 <svelte:head>
-	<title>{$page.status} - Maksym Yarmolenko</title>
+	<title>{page.status} - Maksym Yarmolenko</title>
 </svelte:head>
 
 <PageLayout>
 	<ProseContainer>
 		<div class="error-page">
-			<h1>{$page.status}</h1>
-			<p class="error-message">{$page.error?.message || 'Something went wrong'}</p>
+			<h1>{page.status}</h1>
+			<p class="error-message">{page.error?.message || 'Something went wrong'}</p>
 			<nav class="error-nav">
 				<a href="/">Go Home</a>
 				<a href="/blog">View Blog</a>
